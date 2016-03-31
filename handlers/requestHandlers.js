@@ -1,32 +1,37 @@
 /**
  * Created by Vladimir on 30.03.2016.
  */
+
 var fs = require('fs');
-function start(request, response) {
-    okHandle(response, "Index page");
+
+function startPage(request, response) {
+    fs.readFile('views/pages/index.html', function(err, info) {
+        if(err) {
+            writeError(err, response);
+        }
+        response.write(info);
+        response.end();
+    });
 }
 
 function users(request, response) {
     okHandle(response, "Users page");
 }
 
-function rooms(request, response) {
-    okHandle(response, "Rooms page");
-}
-
-function roomsPage(req, res) {
-    fs.readFile('views/rooms.html', function(err, info) {
+function roomsPage(request, response) {
+    fs.readFile('views/pages/rooms.html', function(err, info) {
         if(err) {
-            writeError(err, res);
+            writeError(err, response);
         }
-        res.end(info);
+        response.write(info);
+        response.end();
     });
 }
 
-function writeError(err, res) {
+function writeError(err, response) {
     console.log(err);
-    res.statusCode = 500;
-    res.end('На сервере произошла ошибка !');
+    response.statusCode = 500;
+    response.write('На сервере произошла ошибка !');
 };
 
 function okHandle(response, text) {
@@ -35,7 +40,6 @@ function okHandle(response, text) {
     response.end();
 }
 
-exports.start = start;
+exports.startPage = startPage;
 exports.users = users;
-exports.rooms = rooms;
 exports.roomsPage = roomsPage;

@@ -9,8 +9,7 @@ function route(handle, request, response) {
     if (typeof handle[pathname] === 'function') {
         return handle[pathname](request, response);
     } else {
-        response.writeHead(404, {"Content-Type": "text/plain"});
-        response.write("404 Not Found");
+        response.statusCode = 404;
         response.end();
     }
 }
