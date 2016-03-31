@@ -38,3 +38,4 @@ function okHandle(response, text) {
 exports.start = start;
 exports.users = users;
 exports.rooms = rooms;
+exports.roomsPage = roomsPage;
