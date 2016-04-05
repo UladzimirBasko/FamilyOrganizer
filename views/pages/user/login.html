@@ -1,24 +1,29 @@
-<div>
-    <form class="form-horizontal" role="form">
-        <fieldset>
-
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="login"> Логин </label>
-                <div class="col-md-6">
-                    <input id="login" name="login" class="form-control" ng-model="user.login">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="pass"> пароль </label>
-                <div class="col-md-6">
-                    <input id="pass" type="password" name="pass" class="form-control" ng-model="user.password">
-                </div>
-            </div>
-        </fieldset>
-    </form>
-</div>
-
-<div class="modal-footer">
-    <button type="submit" class="btn btn-default" ng-click="login();"> Войти </button>
-</div>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+    <title>Family Organizer</title>
+</head>
+<body>
+    <div style="margin:auto;width:16%;padding-bottom:20px">
+        <label>Login</label>
+    </div>
+        <div style="margin:auto;width: 16%;border:3px solid #73AD21;padding-bottom:0;padding-left:10px;padding-right:10px;padding-top:10px;">
+            <form name="login" action="user/login" method="get" accept-charset="utf-8">
+                <table>
+                    <tr>
+                        <td><label for="usermail">Email:</label></td>
+                        <td><input type="text" name="login" placeholder="yourname@email.com" required></li></td>
+                    </tr>
+                    <tr>
+                        <td><label for="password">Password:</label></td>
+                        <td><input type="password" name="password" placeholder="password" required></li></td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" value="Login" style="width:100%"></li></td>
+                        <td><a href="../user/register">or Register</a></li></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+</body>
+</html>

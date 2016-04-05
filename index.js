@@ -7,9 +7,7 @@ var router = require('./routes/router');
 var requestHandlers = require('./handlers/requestHandlers');
 
 var handlers = {};
-handlers["/"] = requestHandlers.startPage;
-handlers["/users"] = requestHandlers.users;
-handlers["/rooms"] = requestHandlers.roomsPage;
-handlers["/rooms.html"] = requestHandlers.roomsPage;
+handlers["index"] = requestHandlers.startPage;
+handlers["user"] = requestHandlers.users;
 
 server.start(router, handlers);

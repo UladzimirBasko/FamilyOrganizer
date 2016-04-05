@@ -3,9 +3,10 @@
  */
 
 var fs = require('fs');
+var userHandler = require('./userHandler');
 
 function startPage(request, response) {
-    fs.readFile('views/pages/index.html', function(err, info) {
+    fs.readFile('views/pages/index/index.html', function(err, info) {
         if(err) {
             writeError(err, response);
         }
@@ -15,17 +16,7 @@ function startPage(request, response) {
 }
 
 function users(request, response) {
-    okHandle(response, "Users page");
-}
-
-function roomsPage(request, response) {
-    fs.readFile('views/pages/rooms.html', function(err, info) {
-        if(err) {
-            writeError(err, response);
-        }
-        response.write(info);
-        response.end();
-    });
+    userHandler.handle(request, response);
 }
 
 function writeError(err, response) {
@@ -42,4 +33,3 @@ function okHandle(response, text) {
 
 exports.startPage = startPage;
 exports.users = users;
-exports.roomsPage = roomsPage;
