@@ -47,7 +47,6 @@ function Storage() {
             });
             return diffs.length === 0;
         });
-
         return obj[0];
     }
 

@@ -46,12 +46,12 @@ function userLogin(request,response) {
         var login = params["login"];
         var pass = params["password"];
 
-        var user  = new User(1, login, pass);
-        user = db.Storage.findUser(user, ['id']);
+        var user  = new User(0, login, pass);
+        user = db.Storage.findUser(user, ['id','fName','lName','mName']);
 
         response.statusCode = 200;
         if(user != null) {
-            response.write(user.toString());
+            response.write("Find user with login: "+user.login+" at name: "+user.fName);
         }else {
             response.write("There is no user with such credentials");
         }
@@ -78,18 +78,11 @@ function userRegister(request, response) {
         var mName = params["mName"];
 
         var users = db.Storage.getUsers();
-        var newUser = new User(users.length, fName, lName, mName);
+        var newUser = new User(users.length, login, pass, fName, lName, mName);
         db.Storage.addUser(newUser);
-        users[users.length] = newUser;
-
-        console.log("New users: "+users);
-        var resStr;
-        for(var i=0; i<users.length; i++) {
-            resStr = resStr + users[i].login;
-        }
 
         response.statusCode = 200;
-        response.write(resStr);
+        response.write("New user was created");
         response.end();
     }
 }
