@@ -1,12 +1,9 @@
 var User = require('../model/User');
-var Room = require('../model/Room');
-var Product = require('../model/Product');
 var diff = require('deep-diff');
 
 function Storage() {
 
     var userStorage = [];
-    var i;
 
     var API = {};
 

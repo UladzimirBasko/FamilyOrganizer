@@ -2,19 +2,14 @@
  * Created by Vladimir on 05.04.2016.
  */
 var url = require('url');
+var qs = require('querystring');
 
-function getParams (reqUrl, error) {
-    var search = url.parse(reqUrl).search;
-    if(search == null) {
+function getParams (body, error) {
+    if(body == null) {
         error = "Failed to parse params";
         return null;
     }
-    var searchParams = search.split("?");
-    if(!searchParams || searchParams.length < 2) {
-        error = "Failed to parse params";
-        return null;
-    }
-    return getJsonFromUrl(searchParams[1]);
+    return getJsonFromUrl(body);
 }
 
 function getRootPath (reqUrl, error) {
@@ -50,6 +45,23 @@ function getJsonFromUrl(urlPath) {
     return result;
 }
 
+function  getJsonFromBody(request,callback) {
+    var body = '';
+    request.on('data', function (data) {
+        body += data;
+        // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+        if (body.length > 1e6) {
+            // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
+            request.connection.destroy();
+        }
+    });
+    request.on('end', function () {
+        var json = qs.parse(body);
+        callback(json);
+    });
+}
+
 exports.getSubPath = getSubPath;
 exports.getParams = getParams;
 exports.getRootPath = getRootPath;
+exports.getJsonFromBody = getJsonFromBody;

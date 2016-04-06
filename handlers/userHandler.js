@@ -32,9 +32,23 @@ function handle(request, response) {
 }
 
 function userLogin(request,response) {
-    var error = null;
-    var params = requestParser.getParams(request.url, error);
-    if (params == null) {
+    if(request.method == "POST") {
+        requestParser.getJsonFromBody(request, function(json) {
+            var login = json["login"];
+            var pass = json["password"];
+
+            var user  = new User(0, login, pass);
+            user = db.Storage.findUser(user, ['id','fName','lName','mName']);
+
+            response.statusCode = 200;
+            if(user != null) {
+                response.write("Find user with login: "+user.login+" at name: "+user.fName);
+            }else {
+                response.write("There is no user with such credentials");
+            }
+            response.end();
+        });
+    }else if(request.method == "GET") {
         fs.readFile('views/pages/user/login.html', function (err, info) {
             if (err) {
                 writeError(err, response);
@@ -42,27 +56,28 @@ function userLogin(request,response) {
             response.write(info);
             response.end();
         });
-    } else {
-        var login = params["login"];
-        var pass = params["password"];
-
-        var user  = new User(0, login, pass);
-        user = db.Storage.findUser(user, ['id','fName','lName','mName']);
-
-        response.statusCode = 200;
-        if(user != null) {
-            response.write("Find user with login: "+user.login+" at name: "+user.fName);
-        }else {
-            response.write("There is no user with such credentials");
-        }
-        response.end();
     }
 }
 
 function userRegister(request, response) {
-    var error = null;
-    var params = requestParser.getParams(request.url, error);
-    if (params == null) {
+    if(request.method == "POST") {
+        requestParser.getJsonFromBody(request, function(json) {
+            console.log(json);
+            var login = json["login"];
+            var pass = json["password"];
+            var fName = json["fName"];
+            var lName = json["lName"];
+            var mName = json["mName"];
+
+            var users = db.Storage.getUsers();
+            var newUser = new User(users.length, login, pass, fName, lName, mName);
+            db.Storage.addUser(newUser);
+
+            response.statusCode = 200;
+            response.write("New user was created");
+            response.end();
+        });
+    }else if(request.method == "GET") {
         fs.readFile('views/pages/user/register.html', function (err, info) {
             if (err) {
                 writeError(err, response);
@@ -70,20 +85,6 @@ function userRegister(request, response) {
             response.write(info);
             response.end();
         });
-    } else {
-        var login = params["login"];
-        var pass = params["password"];
-        var fName = params["fName"];
-        var lName = params["lName"];
-        var mName = params["mName"];
-
-        var users = db.Storage.getUsers();
-        var newUser = new User(users.length, login, pass, fName, lName, mName);
-        db.Storage.addUser(newUser);
-
-        response.statusCode = 200;
-        response.write("New user was created");
-        response.end();
     }
 }
 
